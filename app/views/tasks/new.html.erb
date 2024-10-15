@@ -1,0 +1,24 @@
+<h1>Criar Nova Tarefa</h1>
+
+<%= form_with(model: @task, local: true) do |form| %>
+  <div>
+    <%= form.label :title, "Título" %>
+    <%= form.text_field :title %>
+  </div>
+
+  <div>
+    <%= form.label :status, "Status" %>
+    <%= form.select :status, Task.statuses.keys.map { |status| [status.humanize, status] } %>
+  </div>
+
+  <div>
+    <%= form.label :url, "URL para Web Scraping" %>
+    <%= form.text_field :url %>
+  </div>
+
+  <div>
+    <%= form.submit "Criar Tarefa" %>
+  </div>
+<% end %>
+
+<%= link_to 'Voltar', tasks_path %>
