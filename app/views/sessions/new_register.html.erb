@@ -1,0 +1,24 @@
+<h1>Registrar</h1>
+
+<%= form_with url: register_path, local: true do |form| %>
+  <div>
+    <%= form.label :email %>
+    <%= form.text_field :email %>
+  </div>
+
+  <div>
+    <%= form.label :password %>
+    <%= form.password_field :password %>
+  </div>
+
+  <div>
+    <%= form.label :password_confirmation, 'Confirme sua senha' %>
+    <%= form.password_field :password_confirmation %>
+  </div>
+
+  <div>
+    <%= form.submit 'Registrar' %>
+  </div>
+<% end %>
+
+<%= link_to 'Login', login_path %>
