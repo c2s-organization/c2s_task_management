@@ -10,10 +10,10 @@ class TasksController < ApplicationController
   end
 
   def create
-    @task = current_user.tasks.new(task_params)
+    @task = Task.new(task_params)
 
     if @task.save
-      NotificationService.send_notification(@task, current_user)
+      NotificationService.send_notification(@task)
 
       send_web_scraping_request(@task)
       redirect_to tasks_path, notice: 'Tarefa criada com sucesso.'
@@ -26,10 +26,8 @@ class TasksController < ApplicationController
   end
 
   def update
-    @task = current_user.tasks.find(params[:id])
-
     if @task.update(task_params)
-      NotificationService.send_notification(@task, current_user)
+      NotificationService.send_notification(@task)
       redirect_to tasks_path, notice: 'Tarefa atualizada com sucesso.'
     else
       render :edit
