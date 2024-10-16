@@ -18,14 +18,21 @@ paths:
           type: integer
       responses:
         '200':
-          description: Tarefa atualizada com sucesso
+          description: Task successfully updated
         '422':
           description: Invalid request
       requestBody:
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/TaskUpdate"
+              type: object
+              properties:
+                status:
+                  type: string
+                scraped_data:
+                  type: string
+              required:
+              - status
 components:
   schemas:
     TaskUpdate:

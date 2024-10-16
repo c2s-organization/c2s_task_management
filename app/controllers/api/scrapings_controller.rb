@@ -5,8 +5,8 @@ module Api
     before_action :find_task, only: [:update]
 
     def update
-      if @task.update(status: params["status"], description: params["scraped_data"])
-        render json: { message: 'Tarefa atualizada com sucesso', task: @task }, status: :ok
+      if @task.update(status: params[:status], description: params[:scraped_data])
+        render json: { message: 'Task successfully updated', task: @task }, status: :ok
       else
         render json: { errors: @task.errors.full_messages }, status: :unprocessable_entity
       end
@@ -19,4 +19,3 @@ module Api
     end
   end
 end
-
