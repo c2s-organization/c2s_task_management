@@ -1,16 +1,69 @@
-# spec/services/notification_service_spec.rb
 require 'rails_helper'
 
-RSpec.describe NotificationService, type: :service do
-  let(:task) { create(:task, title: 'Test Task') }
+RSpec.describe NotificationService do
+  let(:task) { double('Task', id: 1, title: 'Test Task') }
+  let(:current_user) { 123 }
+  let(:notification_url) { NotificationService::NOTIFICATION_URL }
+  let(:headers) { { 'Content-Type' => 'application/json' } }
+  let(:response) { instance_double(HTTParty::Response) }
 
-  describe '.send_notification' do
-    it 'sends a notification with task details' do
-      response = NotificationService.call(task, 1, action: 'create')
-      expect(response.code).to eq(201)
+  describe '.call' do
+    before do
+      allow(HTTParty).to receive(:post).with(notification_url, body: body_data, headers: headers).and_return(response)
+    end
 
-      body = JSON.parse(response.body)
-      expect(body['message']).to include('Notificação recebida com sucesso.')
+    context 'when action is create' do
+      let(:body_data) do
+        {
+          title: "Task #{task.id} Created",
+          body: "Task #{task.title} was created by user_id #{current_user}."
+        }.to_json
+      end
+
+      it 'sends a notification for task creation' do
+        allow(response).to receive(:success?).and_return(true)
+
+        result = NotificationService.call(task, current_user, action: 'create')
+
+        expect(HTTParty).to have_received(:post).with(notification_url, body: body_data, headers: headers)
+        expect(result.success?).to be(true)
+      end
+    end
+
+    context 'when action is update' do
+      let(:body_data) do
+        {
+          title: "Task #{task.id} Updated",
+          body: "Task #{task.title} was updated by user_id #{current_user}."
+        }.to_json
+      end
+
+      it 'sends a notification for task update' do
+        allow(response).to receive(:success?).and_return(true)
+
+        result = NotificationService.call(task, current_user, action: 'update')
+
+        expect(HTTParty).to have_received(:post).with(notification_url, body: body_data, headers: headers)
+        expect(result.success?).to be(true)
+      end
+    end
+
+    context 'when the POST request fails' do
+      let(:body_data) do
+        {
+          title: "Task #{task.id} Created",
+          body: "Task #{task.title} was created by user_id #{current_user}."
+        }.to_json
+      end
+
+      it 'returns an unsuccessful response' do
+        allow(response).to receive(:success?).and_return(false)
+
+        result = NotificationService.call(task, current_user, action: 'create')
+
+        expect(HTTParty).to have_received(:post).with(notification_url, body: body_data, headers: headers)
+        expect(result.success?).to be(false)
+      end
     end
   end
 end
