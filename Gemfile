@@ -38,6 +38,9 @@ gem "jbuilder"
 gem 'httparty'
 gem 'jwt', '~> 2.2'
 gem 'dotenv-rails'
+gem 'sassc-rails'
+gem 'cssbundling-rails'
+gem 'bootstrap', '~> 5.2.3'
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]

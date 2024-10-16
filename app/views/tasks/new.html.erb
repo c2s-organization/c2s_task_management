@@ -1,24 +1,24 @@
-<h1>Criar Nova Tarefa</h1>
+<div class="container">
+  <h1 class="my-4">Criar Nova Tarefa</h1>
+  <%= form_with(model: @task, local: true, class: 'form') do |form| %>
+    <div class="mb-3">
+      <%= form.label :title, "Título", class: 'form-label' %>
+      <%= form.text_field :title, class: 'form-control', placeholder: 'Digite o título da tarefa' %>
+    </div>
 
-<%= form_with(model: @task, local: true) do |form| %>
-  <div>
-    <%= form.label :title, "Título" %>
-    <%= form.text_field :title %>
-  </div>
+    <div class="mb-3">
+      <%= form.label :status, "Status", class: 'form-label' %>
+      <%= form.select :status, Task.statuses.keys.map { |status| [status.humanize, status] }, {}, class: 'form-select' %>
+    </div>
 
-  <div>
-    <%= form.label :status, "Status" %>
-    <%= form.select :status, Task.statuses.keys.map { |status| [status.humanize, status] } %>
-  </div>
+    <div class="mb-3">
+      <%= form.label :url, "URL para Web Scraping", class: 'form-label' %>
+      <%= form.text_field :url, class: 'form-control', placeholder: 'Insira a URL' %>
+    </div>
 
-  <div>
-    <%= form.label :url, "URL para Web Scraping" %>
-    <%= form.text_field :url %>
-  </div>
-
-  <div>
-    <%= form.submit "Criar Tarefa" %>
-  </div>
-<% end %>
-
-<%= link_to 'Voltar', tasks_path %>
+    <div class="d-flex justify-content-between">
+      <%= link_to 'Voltar', tasks_path, class: 'btn btn-secondary' %>
+      <%= form.submit "Criar Tarefa", class: 'btn btn-primary' %>
+    </div>
+  <% end %>
+</div>
