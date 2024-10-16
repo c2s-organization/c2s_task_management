@@ -60,6 +60,7 @@ group :development, :test do
   gem 'shoulda-matchers'
   gem 'webmock'
   gem 'rails-controller-testing'
+  gem 'rswag'
   gem 'simplecov', require: false
 end
 

@@ -1,0 +1,48 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/api/scrapings/{id}":
+    put:
+      summary: Update a scraping task
+      tags:
+      - Scrapings
+      parameters:
+      - name: id
+        in: path
+        description: Task ID
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Tarefa atualizada com sucesso
+        '422':
+          description: Invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/TaskUpdate"
+components:
+  schemas:
+    TaskUpdate:
+      type: object
+      properties:
+        status:
+          type: string
+        scraped_data:
+          type: string
+      required:
+      - status
+    Task:
+      type: object
+      properties:
+        id:
+          type: integer
+        status:
+          type: string
+        description:
+          type: string
