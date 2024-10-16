@@ -1,12 +1,10 @@
 class SessionsController < ApplicationController
   include HTTParty
   # TODO: Mover para HabbitMQ?
-  base_uri 'http://localhost:3001'
   skip_before_action :authenticate_user, only: [:new, :login, :new_register, :register]
 
-
   def login
-    response = self.class.post('/login', body: { email: params[:email], password: params[:password] })
+    response = AuthenticationService.login(params[:email], params[:password])
 
     if response.success?
       session[:jwt_token] = response['token']
@@ -18,7 +16,7 @@ class SessionsController < ApplicationController
   end
 
   def register
-    response = self.class.post('/register', body: { email: params[:email], password: params[:password], password_confirmation: params[:password_confirmation] })
+    response = AuthenticationService.register(params[:email], params[:password], params[:password_confirmation])
 
     if response.success?
       redirect_to login_path, notice: 'Registro realizado com sucesso. Por favor, faça o login.'
