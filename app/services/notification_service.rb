@@ -4,15 +4,11 @@ class NotificationService
 
   NOTIFICATION_URL = 'http://localhost:3002/notifications'.freeze
 
-  def self.call(task)
+  def self.call(task, current_user, action: 'create')
     # TODO: Mover para HabbitMQ
     body = {
-      title: "Task #{task.id} #{task.new_record? ? 'Created' : 'Updated'}",
-      body: "Task #{task.title} was #{task.new_record? ? 'created' : 'updated'}.",
-      task_details: {
-        task_id: task.id,
-        status: task.status
-      }
+      title: "Task #{task.id} #{action.eql?("create") ? 'Created' : 'Updated'}",
+      body: "Task #{task.title} was #{action.eql?("create") ? 'created' : 'updated'} by user_id #{current_user}."
     }
 
     HTTParty.post(NOTIFICATION_URL, body: body.to_json, headers: { 'Content-Type' => 'application/json' })
