@@ -1,5 +1,6 @@
 class SessionsController < ApplicationController
   include HTTParty
+  # TODO: Mover para HabbitMQ?
   base_uri 'http://localhost:3001'
   skip_before_action :authenticate_user, only: [:new, :login, :new_register, :register]
 

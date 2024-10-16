@@ -50,6 +50,7 @@ class TasksController < ApplicationController
   end
 
   def send_web_scraping_request(task)
+    # TODO: Mover para service, depois pra HabbitMQ
     uri = URI.parse("http://localhost:3003/scrapings")
     http = Net::HTTP.new(uri.host, uri.port)
     request = Net::HTTP::Post.new(uri.path, { 'Content-Type' => 'application/json' })
