@@ -13,9 +13,9 @@ class TasksController < ApplicationController
     @task = Task.new(task_params)
 
     if @task.save
-      NotificationService.send_notification(@task)
+      NotificationService.call(@task)
 
-      send_web_scraping_request(@task)
+      ScrapingService.call(@task)
       redirect_to tasks_path, notice: 'Tarefa criada com sucesso.'
     else
       render :new
@@ -27,7 +27,7 @@ class TasksController < ApplicationController
 
   def update
     if @task.update(task_params)
-      NotificationService.send_notification(@task)
+      NotificationService.call(@task)
       redirect_to tasks_path, notice: 'Tarefa atualizada com sucesso.'
     else
       render :edit
@@ -47,14 +47,5 @@ class TasksController < ApplicationController
 
   def task_params
     params.require(:task).permit(:title, :status, :url)
-  end
-
-  def send_web_scraping_request(task)
-    # TODO: Mover para service, depois pra HabbitMQ
-    uri = URI.parse("http://localhost:3003/scrapings")
-    http = Net::HTTP.new(uri.host, uri.port)
-    request = Net::HTTP::Post.new(uri.path, { 'Content-Type' => 'application/json' })
-    request.body = { task_id: task.id, url: task.url }.to_json
-    http.request(request)
   end
 end

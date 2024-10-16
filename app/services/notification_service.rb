@@ -4,7 +4,7 @@ class NotificationService
 
   NOTIFICATION_URL = 'http://localhost:3002/notifications'.freeze
 
-  def self.send_notification(task)
+  def self.call(task)
     # TODO: Mover para HabbitMQ
     body = {
       title: "Task #{task.id} #{task.new_record? ? 'Created' : 'Updated'}",
