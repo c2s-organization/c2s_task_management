@@ -6,7 +6,7 @@ RSpec.describe NotificationService, type: :service do
 
   describe '.send_notification' do
     it 'sends a notification with task details' do
-      response = NotificationService.send_notification(task)
+      response = NotificationService.call(task, 1, action: 'create')
       expect(response.code).to eq(201)
 
       body = JSON.parse(response.body)
