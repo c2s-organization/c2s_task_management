@@ -1,0 +1,113 @@
+version: '3.8'
+
+services:
+  # Serviço principal - Task Management
+  task_management:
+    build: .
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./.env.docker
+    depends_on:
+      - auth
+      - notification
+      - scraping
+    networks:
+      - c2s_network
+    volumes:
+      - .:/app
+      - ./config/database.docker.yml:/app/config/database.yml
+    command: bundle exec rails s -b '0.0.0.0'  # Escutar em todas as interfaces
+
+  # Microserviço de Autenticação
+  auth:
+    build: ../c2s_auth
+    ports:
+      - "3001:3000"
+    env_file:
+      - ../c2s_auth/.env.docker
+    networks:
+      - c2s_network
+    volumes:
+      - ../c2s_auth:/app
+      - ../c2s_auth/config/database.docker.yml:/app/config/database.yml
+    command: bash -c "rm -f /app/tmp/pids/server.pid && bundle exec rails s -b '0.0.0.0'"
+
+  # Microserviço de Notificações
+  notification:
+    build: ../c2s_notification
+    ports:
+      - "3002:3000"  # Mapeia a porta 3002 do host para o container
+    env_file:
+      - ../c2s_notification/.env.docker
+    networks:
+      - c2s_network
+    volumes:
+      - ../c2s_notification:/app
+    command: bundle exec rails s -b '0.0.0.0'  # Escutar em todas as interfaces
+
+  # Microserviço de Scraping
+  scraping:
+    build: ../c2s_scraping
+    ports:
+      - "3003:3000"  # Mapeia a porta 3003 do host para o container
+    env_file:
+      - ../c2s_scraping/.env.docker
+    networks:
+      - c2s_network
+    volumes:
+      - ../c2s_scraping:/app
+    environment:
+      - URL_MS_NOTIFICATION=http://notification:3002
+      - URL_MS_TASK=http://task_management:3000
+    command: bundle exec rails s -b '0.0.0.0'  # Escutar em todas as interfaces
+
+  # Banco de dados para o Task Management
+  task_management_db:
+    image: postgres:latest
+    env_file:
+      - ./.env.docker
+    volumes:
+      - task_management_db_data:/var/lib/postgresql/data
+    networks:
+      - c2s_network
+
+  # Banco de dados para o Auth
+  auth_db:
+    image: postgres:latest
+    env_file:
+      - ../c2s_auth/.env.docker
+    volumes:
+      - auth_db_data:/var/lib/postgresql/data
+    networks:
+      - c2s_network
+
+  # Banco de dados para o Notification
+  notification_db:
+    image: postgres:latest
+    env_file:
+      - ../c2s_notification/.env.docker
+    volumes:
+      - notification_db_data:/var/lib/postgresql/data
+    networks:
+      - c2s_network
+
+  # Banco de dados para o Scraping
+  scraping_db:
+    image: postgres:latest
+    env_file:
+      - ../c2s_scraping/.env.docker
+    volumes:
+      - scraping_db_data:/var/lib/postgresql/data
+    networks:
+      - c2s_network
+
+networks:
+  c2s_network:
+    driver: bridge
+
+volumes:
+  task_management_db_data:
+  auth_db_data:
+  notification_db_data:
+  scraping_db_data:
