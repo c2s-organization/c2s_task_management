@@ -63,9 +63,54 @@ Abaixo estão as instruções para configurar o ambiente, instalar as dependênc
    A chave `URL_MS_SCRAPING` será usada para acessar as APIs do microserviço de web scraping.
 
 ## Executando o Servidor
+1. Clonando os Microserviços
 
-### CLONAR OS MICRO SERVIÇOS
-### EXECUTAR O DOCKER
+Para rodar o sistema com os microserviços, você precisa clonar os repositórios de cada um dos microserviços. Siga os comandos abaixo para clonar todos eles:
+
+```bash
+# Clonar o repositório principal (Task Management)
+git clone https://github.com/usuario/c2s_task_management.git
+```
+```bash
+# Clonar o microserviço de autenticação (Auth Service)
+git clone https://github.com/usuario/c2s_auth.git
+```
+```bash
+# Clonar o microserviço de notificações (Notification Service)
+git clone https://github.com/usuario/c2s_notification.git
+```
+```bash
+# Clonar o microserviço de scraping (Scraping Service)
+git clone https://github.com/usuario/c2s_scraping.git
+```
+
+2. Executando o Docker
+
+Depois de clonar todos os repositórios, você pode rodar todos os serviços juntos com o Docker. Navegue até o diretório do projeto principal c2s_task_management e execute o comando abaixo para levantar os serviços:
+
+```bash
+# Acesse o diretório do projeto principal
+cd c2s_task_management
+```
+``` bash
+# Construa e suba os containers usando Docker Compose
+docker-compose up --build
+```
+Esse comando irá:
+
+Construir as imagens Docker para cada um dos microserviços.
+Subir os containers para task_management, auth, notification, e scraping.
+3. Acessando os Serviços
+
+Depois de executar o comando docker-compose up, você pode acessar os serviços nos seguintes endpoints:
+
+```
+Task Management: http://localhost:3000
+Auth Service: http://localhost:3001
+Notification Service: http://localhost:3002
+Scraping Service: http://localhost:3003
+```
+Certifique-se de que o Docker está corretamente instalado na sua máquina para executar os comandos acima.
 
 Acesse o aplicativo no navegador em `http://localhost:3000`.
 
