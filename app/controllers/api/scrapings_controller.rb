@@ -7,7 +7,8 @@ module Api
     def update
       if @task.update(status: params[:status], description: params[:scraped_data])
         NotifyService.call("Task updated", "Task #{@task.title} was updated by micro service scraping.")
-        TaskMailer.finish_task(@task).deliver_now
+        TaskMailer.finished_task(@task).deliver_now if @task.completed?
+        TaskMailer.failed_task(@task).deliver_now if @task.failed?
         NotifyService.call("Email sent", "Task #{@task.title} email was sent.")
         render json: { task: @task }, status: :ok
       else

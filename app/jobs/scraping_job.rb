@@ -1,6 +1,8 @@
 class ScrapingJob < ApplicationJob
   queue_as :default
 
+  retry_on StandardError, wait: 30.seconds, attempts: 5
+
   def perform(task_id)
     NotifyService.call("Job started", "Scraping task: #{task_id}")
     task = Task.find(task_id)

@@ -1,0 +1,10 @@
+<h1>Sua tarefa foi processada com sucesso!</h1>
+<h2><%= @user.email %></h2>
+<p>Sua tarefa é a com os seguintes detalhes:</p>
+<ul>
+  <li><strong>Título:</strong> <%= @task.title %></li>
+  <li><strong>Descrição:</strong> <%= sanitize(@task.description) %></li>
+  <li><strong>URL:</strong> <%= link_to truncate(@task.url, length: 100), @task.url, target: "_blank" %></li>
+  <li><strong>Status:</strong> <%= @task.status %></li>
+</ul>
+<p>Obrigado!</p>

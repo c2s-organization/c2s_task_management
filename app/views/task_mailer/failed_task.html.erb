@@ -1,0 +1,9 @@
+<h1>Sua tarefa foi processada com falha!</h1>
+<h2><%= @user.email %></h2>
+<p>Sua tarefa é a com os seguintes detalhes:</p>
+<ul>
+  <li><strong>Título:</strong> <%= @task.title %></li>
+  <li><strong>URL:</strong> <%= link_to truncate(@task.url, length: 100), @task.url, target: "_blank" %></li>
+</ul>
+<p>Vamos tentar novamente mais tarde.</p>
+<p>Desculpe!</p>
