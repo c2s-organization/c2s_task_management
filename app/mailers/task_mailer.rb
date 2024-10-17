@@ -3,8 +3,9 @@ class TaskMailer < ApplicationMailer
 
   def finish_task(task)
     @task = task
+    @user = task.user
     mail(
-      to: "user@example.com",
+      to: @user.email,
       subject: "Sua tarefa foi processada: #{@task.title}"
     )
   end
