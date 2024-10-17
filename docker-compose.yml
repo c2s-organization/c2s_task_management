@@ -12,6 +12,8 @@ services:
       - auth
       - notification
       - scraping
+      - redis
+      - sidekiq
     networks:
       - c2s_network
     volumes:
@@ -61,6 +63,26 @@ services:
       - ../c2s_scraping/config/database.docker.yml:/app/config/database.yml
     command: bash -c "rm -f /app/tmp/pids/server.pid && bundle exec rails db:migrate && rm -f /app/tmp/pids/server.pid && bundle exec rails s -b '0.0.0.0'"
 
+  redis:
+    image: "redis:alpine"
+    env_file:
+      - ./.env.docker
+    networks:
+      - c2s_network
+  sidekiq:
+    build: .
+    command: bundle exec sidekiq
+    env_file:
+      - ./.env.docker
+    depends_on:
+      - redis
+      - task_management_db
+    volumes:
+      - .:/app
+      - ./config/database.docker.yml:/app/config/database.yml
+    networks:
+      - c2s_network
+
   # Banco de dados para o Task Management
   task_management_db:
     image: postgres:latest
@@ -100,6 +122,7 @@ services:
       - scraping_db_data:/var/lib/postgresql/data
     networks:
       - c2s_network
+
 
 networks:
   c2s_network:

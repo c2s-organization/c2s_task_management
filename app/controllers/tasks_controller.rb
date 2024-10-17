@@ -15,7 +15,7 @@ class TasksController < ApplicationController
     if @task.save
       NotificationService.call(@task, @current_user)
 
-      ScrapingService.call(@task)
+      ScrapingJob.perform_later(@task.id)
       redirect_to tasks_path, notice: 'Tarefa criada com sucesso.'
     else
       render :new

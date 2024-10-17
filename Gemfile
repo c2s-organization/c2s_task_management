@@ -41,6 +41,7 @@ gem 'dotenv-rails'
 gem 'sassc-rails'
 gem 'cssbundling-rails'
 gem 'bootstrap', '~> 5.2.3'
+gem 'sidekiq'
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
