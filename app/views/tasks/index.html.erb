@@ -1,45 +1,43 @@
-<div class="container">
-  <h1 class="text-center my-4">Gestão de Tarefas</h1>
-  <table class="table table-striped table-hover table-bordered">
-    <thead class="table-dark">
+<h1 class="text-center my-4">Gestão de Tarefas</h1>
+<table class="table table-striped table-hover table-bordered">
+  <thead class="table-dark">
+  <tr>
+    <th scope="col">ID</th>
+    <th scope="col">Título</th>
+    <th scope="col">Status</th>
+    <th scope="col">Descrição</th>
+    <th scope="col">URL</th>
+    <th scope="col">Ações</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @tasks.each do |task| %>
     <tr>
-      <th scope="col">ID</th>
-      <th scope="col">Título</th>
-      <th scope="col">Status</th>
-      <th scope="col">Descrição</th>
-      <th scope="col">URL</th>
-      <th scope="col">Ações</th>
+      <td><%= task.id %></td>
+      <td><%= task.title %></td>
+      <td>
+        <% case task.status %>
+        <% when 'pending' %>
+          <span class="badge bg-info">Pendente</span>
+        <% when 'in_progress' %>
+          <span class="badge bg-warning">Em Progresso</span>
+        <% when 'completed' %>
+          <span class="badge bg-success">Completado</span>
+        <% when 'failed' %>
+          <span class="badge bg-danger">Falhou</span>
+        <% end %>
+      </td>
+      <td><%= task.description %></td>
+      <td><%= link_to task.url, task.url, target: "_blank", class: "link-primary" %></td>
+      <td>
+        <%= link_to 'Editar', edit_task_path(task), class: 'btn btn-primary btn-sm' %>
+        <%= button_to 'Excluir', task_path(task), method: :delete, class: 'btn btn-danger btn-sm' %>
+      </td>
     </tr>
-    </thead>
-    <tbody>
-    <% @tasks.each do |task| %>
-      <tr>
-        <td><%= task.id %></td>
-        <td><%= task.title %></td>
-        <td>
-          <% case task.status %>
-          <% when 'pending' %>
-            <span class="badge bg-info">Pendente</span>
-          <% when 'in_progress' %>
-            <span class="badge bg-warning">Em Progresso</span>
-          <% when 'completed' %>
-            <span class="badge bg-success">Completado</span>
-          <% when 'failed' %>
-            <span class="badge bg-danger">Falhou</span>
-          <% end %>
-        </td>
-        <td><%= task.description %></td>
-        <td><%= link_to task.url, task.url, target: "_blank", class: "link-primary" %></td>
-        <td>
-          <%= link_to 'Editar', edit_task_path(task), class: 'btn btn-primary btn-sm' %>
-          <%= button_to 'Excluir', task_path(task), method: :delete, class: 'btn btn-danger btn-sm' %>
-        </td>
-      </tr>
-    <% end %>
-    </tbody>
-  </table>
+  <% end %>
+  </tbody>
+</table>
 
-  <div class="text-end mt-4">
-    <%= link_to 'Criar Nova Tarefa', new_task_path, class: 'btn btn-success' %>
-  </div>
+<div class="text-end mt-4">
+  <%= link_to 'Criar Nova Tarefa', new_task_path, class: 'btn btn-success' %>
 </div>

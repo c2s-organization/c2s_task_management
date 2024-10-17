@@ -11,8 +11,10 @@
   </head>
 
   <body>
-  <%#= button_to 'Logout', logout_path, method: :delete, class: 'btn btn-danger btn-sm' %>
+  <div class="container">
+    <%= button_to 'Logout', logout_path, method: :delete, class: 'btn btn-danger btn-sm' %>
 
-  <%= yield %>
+    <%= yield %>
+  </div>
   </body>
 </html>
