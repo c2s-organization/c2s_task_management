@@ -6,6 +6,7 @@ module Api
 
     def update
       if @task.update(status: params[:status], description: params[:scraped_data])
+        TaskMailer.finish_task(@task).deliver_now
         render json: { message: 'Task successfully updated', task: @task }, status: :ok
       else
         render json: { errors: @task.errors.full_messages }, status: :unprocessable_entity

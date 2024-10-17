@@ -66,6 +66,7 @@ group :development, :test do
   gem 'rails-controller-testing'
   gem 'rswag'
   gem 'simplecov', require: false
+  gem 'letter_opener_web'
 end
 
 group :development do
