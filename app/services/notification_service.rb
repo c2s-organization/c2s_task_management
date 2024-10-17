@@ -2,7 +2,7 @@
 class NotificationService
   require 'httparty'
 
-  NOTIFICATION_URL = 'http://localhost:3002/notifications'.freeze
+  NOTIFICATION_URL = "#{ENV["URL_MS_NOTIFICATION"]}/notifications".freeze
 
   def self.call(task, current_user, action: 'create')
     # TODO: Mover para HabbitMQ

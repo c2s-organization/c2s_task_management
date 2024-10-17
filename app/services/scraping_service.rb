@@ -1,7 +1,7 @@
 class ScrapingService
   require 'httparty'
 
-  NOTIFICATION_URL = 'http://localhost:3003/scrapings'.freeze
+  NOTIFICATION_URL = "#{ENV["URL_MS_SCRAPING"]}/scrapings".freeze
 
   def self.call(task)
     # TODO: Mover para HabbitMQ

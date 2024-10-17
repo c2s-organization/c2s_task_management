@@ -1,6 +1,6 @@
 class AuthenticationService
   include HTTParty
-  base_uri 'http://localhost:3001'
+  base_uri ENV["URL_MS_AUTH"]
 
   def self.login(email, password)
     post('/login', body: { email: email, password: password }.to_json, headers: { 'Content-Type' => 'application/json' })
