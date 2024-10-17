@@ -17,7 +17,7 @@ services:
     volumes:
       - .:/app
       - ./config/database.docker.yml:/app/config/database.yml
-    command: bundle exec rails s -b '0.0.0.0'  # Escutar em todas as interfaces
+    command: bash -c "rm -f /app/tmp/pids/server.pid && bundle exec rails db:migrate && rm -f /app/tmp/pids/server.pid && bundle exec rails s -b '0.0.0.0'"
 
   # Microserviço de Autenticação
   auth:
@@ -31,7 +31,7 @@ services:
     volumes:
       - ../c2s_auth:/app
       - ../c2s_auth/config/database.docker.yml:/app/config/database.yml
-    command: bash -c "rm -f /app/tmp/pids/server.pid && bundle exec rails s -b '0.0.0.0'"
+    command: bash -c "rm -f /app/tmp/pids/server.pid && bundle exec rails db:migrate && rm -f /app/tmp/pids/server.pid && bundle exec rails s -b '0.0.0.0'"
 
   # Microserviço de Notificações
   notification:
@@ -45,7 +45,7 @@ services:
     volumes:
       - ../c2s_notification:/app
       - ../c2s_notification/config/database.docker.yml:/app/config/database.yml
-    command: bash -c "rm -f /app/tmp/pids/server.pid && bundle exec rails s -b '0.0.0.0'"
+    command: bash -c "rm -f /app/tmp/pids/server.pid && bundle exec rails db:migrate && rm -f /app/tmp/pids/server.pid && bundle exec rails s -b '0.0.0.0'"
 
   # Microserviço de Scraping
   scraping:
@@ -62,7 +62,7 @@ services:
     environment:
       - URL_MS_NOTIFICATION=http://notification:3002
       - URL_MS_TASK=http://task_management:3000
-    command: bundle exec rails s -b '0.0.0.0'  # Escutar em todas as interfaces
+    command: bash -c "rm -f /app/tmp/pids/server.pid && bundle exec rails db:migrate && rm -f /app/tmp/pids/server.pid && bundle exec rails s -b '0.0.0.0'"
 
   # Banco de dados para o Task Management
   task_management_db:
