@@ -1,14 +1,20 @@
 <div class="container">
   <h1 class="my-4">Criar Nova Tarefa</h1>
+  <% if @task.errors.any? %>
+    <div class="alert alert-danger">
+      <h4><%= pluralize(@task.errors.count, "erro") %> impedem que essa tarefa seja criada:</h4>
+      <ul>
+        <% @task.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
   <%= form_with(model: @task, local: true, class: 'form') do |form| %>
     <div class="mb-3">
       <%= form.label :title, "Título", class: 'form-label' %>
       <%= form.text_field :title, class: 'form-control', placeholder: 'Digite o título da tarefa' %>
-    </div>
-
-    <div class="mb-3">
-      <%= form.label :status, "Status", class: 'form-label' %>
-      <%= form.select :status, Task.statuses.keys.map { |status| [status.humanize, status] }, {}, class: 'form-select' %>
     </div>
 
     <div class="mb-3">

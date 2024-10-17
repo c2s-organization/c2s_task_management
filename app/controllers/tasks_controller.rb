@@ -13,9 +13,8 @@ class TasksController < ApplicationController
     @task = Task.new(task_params)
 
     if @task.save
-      NotificationService.call(@task, @current_user)
-
       ScrapingJob.perform_later(@task.id)
+      NotificationService.call(@task, @current_user)
       redirect_to tasks_path, notice: 'Tarefa criada com sucesso.'
     else
       render :new
@@ -27,6 +26,7 @@ class TasksController < ApplicationController
 
   def update
     if @task.update(task_params)
+      ScrapingJob.perform_later(@task.id)
       NotificationService.call(@task, @current_user, action: 'update')
       redirect_to tasks_path, notice: 'Tarefa atualizada com sucesso.'
     else

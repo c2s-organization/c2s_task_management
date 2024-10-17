@@ -3,6 +3,7 @@
   <table class="table table-striped table-hover table-bordered">
     <thead class="table-dark">
     <tr>
+      <th scope="col">ID</th>
       <th scope="col">Título</th>
       <th scope="col">Status</th>
       <th scope="col">Descrição</th>
@@ -13,12 +14,18 @@
     <tbody>
     <% @tasks.each do |task| %>
       <tr>
+        <td><%= task.id %></td>
         <td><%= task.title %></td>
         <td>
-          <% if task.status == 'completed' %>
-            <span class="badge bg-success">Completado</span>
-          <% else %>
+          <% case task.status %>
+          <% when 'pending' %>
+            <span class="badge bg-info">Pendente</span>
+          <% when 'in_progress' %>
             <span class="badge bg-warning">Em Progresso</span>
+          <% when 'completed' %>
+            <span class="badge bg-success">Completado</span>
+          <% when 'failed' %>
+            <span class="badge bg-danger">Falhou</span>
           <% end %>
         </td>
         <td><%= task.description %></td>
