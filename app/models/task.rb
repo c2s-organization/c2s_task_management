@@ -1,4 +1,6 @@
 class Task < ApplicationRecord
+  belongs_to :user, optional: true
+
   enum status: { pending: "pending", in_progress: "in_progress", completed: "completed", failed: "failed" }
   validates :title, :url, presence: true
 

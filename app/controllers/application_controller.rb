@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
 
     begin
       decoded_token = JWT.decode(token, Rails.application.secrets.secret_key_base)
-      @current_user = decoded_token[0]['user_id']
+      @current_user = User.find(decoded_token[0]['user_id'])
     rescue JWT::DecodeError
       session[:jwt_token] = nil
       redirect_to login_path, alert: 'Token inválido, faça login novamente.'
