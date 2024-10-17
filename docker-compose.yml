@@ -44,7 +44,8 @@ services:
       - c2s_network
     volumes:
       - ../c2s_notification:/app
-    command: bundle exec rails s -b '0.0.0.0'  # Escutar em todas as interfaces
+      - ../c2s_notification/config/database.docker.yml:/app/config/database.yml
+    command: bash -c "rm -f /app/tmp/pids/server.pid && bundle exec rails s -b '0.0.0.0'"
 
   # Microserviço de Scraping
   scraping:
@@ -57,6 +58,7 @@ services:
       - c2s_network
     volumes:
       - ../c2s_scraping:/app
+      - ../c2s_scraping/config/database.docker.yml:/app/config/database.yml
     environment:
       - URL_MS_NOTIFICATION=http://notification:3002
       - URL_MS_TASK=http://task_management:3000
