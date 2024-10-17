@@ -59,9 +59,6 @@ services:
     volumes:
       - ../c2s_scraping:/app
       - ../c2s_scraping/config/database.docker.yml:/app/config/database.yml
-    environment:
-      - URL_MS_NOTIFICATION=http://notification:3002
-      - URL_MS_TASK=http://task_management:3000
     command: bash -c "rm -f /app/tmp/pids/server.pid && bundle exec rails db:migrate && rm -f /app/tmp/pids/server.pid && bundle exec rails s -b '0.0.0.0'"
 
   # Banco de dados para o Task Management
