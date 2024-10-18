@@ -2,7 +2,7 @@ class TasksController < ApplicationController
   before_action :set_task, only: [:edit, :update, :destroy]
 
   def index
-    @tasks = @current_user.tasks
+    @tasks = @current_user.tasks.order('updated_at DESC')
   end
 
   def new
@@ -14,7 +14,7 @@ class TasksController < ApplicationController
 
     if @task.save
       ScrapingJob.perform_later(@task.id)
-      NotifyService.call("Task created", "Task #{@task.title} was created by user_id #{@task.user.id}.")
+      NotifyJob.perform_later("Task created", "Task #{@task.title} was created by user_id #{@task.user.id}.")
       redirect_to tasks_path, notice: 'Tarefa criada com sucesso.'
     else
       render :new
@@ -27,7 +27,7 @@ class TasksController < ApplicationController
   def update
     if @task.update(task_params)
       ScrapingJob.perform_later(@task.id)
-      NotifyService.call("Task updated", "Task #{@task.title} was updated by user_id #{@task.user.id}.")
+      NotifyJob.perform_later("Task updated", "Task #{@task.title} was updated by user_id #{@task.user.id}.")
       redirect_to tasks_path, notice: 'Tarefa atualizada com sucesso.'
     else
       render :edit
@@ -36,7 +36,7 @@ class TasksController < ApplicationController
 
   def destroy
     @task.destroy
-    NotifyService.call("Task deleted", "Task #{@task.title} was deleted by user_id #{@task.user.id}.")
+    NotifyJob.perform_later("Task deleted", "Task #{@task.title} was deleted by user_id #{@task.user.id}.")
     redirect_to tasks_path, notice: 'Tarefa excluída com sucesso.'
   end
 

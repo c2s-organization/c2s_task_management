@@ -71,7 +71,7 @@ services:
       - c2s_network
   sidekiq:
     build: .
-    command: bundle exec sidekiq
+    command: bundle exec sidekiq -C sidekiq.yml
     env_file:
       - ./.env.docker
     depends_on:

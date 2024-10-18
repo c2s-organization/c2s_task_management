@@ -6,10 +6,10 @@ module Api
 
     def update
       if @task.update(status: params[:status], description: params[:scraped_data])
-        NotifyService.call("Task updated", "Task #{@task.title} was updated by micro service scraping.")
+        NotifyJob.perform_later("Task updated", "Task #{@task.title} was updated by micro service scraping.")
         TaskMailer.finished_task(@task).deliver_now if @task.completed?
         TaskMailer.failed_task(@task).deliver_now if @task.failed?
-        NotifyService.call("Email sent", "Task #{@task.title} email was sent.")
+        NotifyJob.perform_later("Email sent", "Task #{@task.title} email was sent.")
         render json: { task: @task }, status: :ok
       else
         render json: { errors: @task.errors.full_messages }, status: :unprocessable_entity
