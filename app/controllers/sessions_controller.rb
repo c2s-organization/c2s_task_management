@@ -1,4 +1,5 @@
 class SessionsController < ApplicationController
+  layout 'login'
   include HTTParty
   skip_before_action :authenticate_user, only: [:new, :login, :new_register, :register]
 
@@ -22,7 +23,7 @@ class SessionsController < ApplicationController
       redirect_to login_path, notice: 'Registro realizado com sucesso. Por favor, faça o login.'
     else
       flash.now[:alert] = 'Erro no registro'
-      render :new
+      render :new_register
     end
   end
 

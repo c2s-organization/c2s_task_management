@@ -1,24 +1,31 @@
 <h1>Registrar</h1>
 
 <%= form_with url: register_path, local: true do |form| %>
-  <div>
-    <%= form.label :email %>
-    <%= form.text_field :email %>
+  <div class="mb-3">
+    <%= form.label :email, class: 'form-label' %>
+    <%= form.text_field :email, class: 'form-control', placeholder: 'Digite seu e-mail' %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :password, class: 'form-label' %>
+    <%= form.password_field :password, class: 'form-control', placeholder: 'Digite sua senha' %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :password_confirmation, 'Confirme sua senha', class: 'form-label' %>
+    <%= form.password_field :password_confirmation, class: 'form-control', placeholder: 'Confirme sua senha' %>
   </div>
 
   <div>
-    <%= form.label :password %>
-    <%= form.password_field :password %>
-  </div>
-
-  <div>
-    <%= form.label :password_confirmation, 'Confirme sua senha' %>
-    <%= form.password_field :password_confirmation %>
-  </div>
-
-  <div>
-    <%= form.submit 'Registrar' %>
+    <%= form.submit 'Salvar', class: 'btn btn-primary w-100' %>
   </div>
 <% end %>
 
-<%= link_to 'Login', login_path %>
+<div class="d-flex justify-content-between mt-3">
+  <%= link_to 'Login', login_path, class: 'btn btn-primary w-100' %>
+</div>
+
+<footer class="mt-4">
+  <p>C2S - Gestão de Contatos © 2016-2024</p>
+</footer>
+</div>
