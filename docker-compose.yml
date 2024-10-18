@@ -19,7 +19,7 @@ services:
     volumes:
       - .:/app
       - ./config/database.docker.yml:/app/config/database.yml
-    command: bash -c "rm -f /app/tmp/pids/server.pid && bundle exec rails db:migrate && rm -f /app/tmp/pids/server.pid && bundle exec rails s -b '0.0.0.0'"
+    entrypoint: /usr/bin/entrypoint.sh
 
   # Microserviço de Autenticação
   auth:
@@ -33,7 +33,7 @@ services:
     volumes:
       - ../c2s_auth:/app
       - ../c2s_auth/config/database.docker.yml:/app/config/database.yml
-    command: bash -c "rm -f /app/tmp/pids/server.pid && bundle exec rails db:migrate && rm -f /app/tmp/pids/server.pid && bundle exec rails s -b '0.0.0.0'"
+    entrypoint: /usr/bin/entrypoint.sh
 
   # Microserviço de Notificações
   notification:
@@ -47,7 +47,7 @@ services:
     volumes:
       - ../c2s_notification:/app
       - ../c2s_notification/config/database.docker.yml:/app/config/database.yml
-    command: bash -c "rm -f /app/tmp/pids/server.pid && bundle exec rails db:migrate && rm -f /app/tmp/pids/server.pid && bundle exec rails s -b '0.0.0.0'"
+    entrypoint: /usr/bin/entrypoint.sh
 
   # Microserviço de Scraping
   scraping:
@@ -61,7 +61,7 @@ services:
     volumes:
       - ../c2s_scraping:/app
       - ../c2s_scraping/config/database.docker.yml:/app/config/database.yml
-    command: bash -c "rm -f /app/tmp/pids/server.pid && bundle exec rails db:migrate && rm -f /app/tmp/pids/server.pid && bundle exec rails s -b '0.0.0.0'"
+    entrypoint: /usr/bin/entrypoint.sh
 
   redis:
     image: "redis:alpine"
