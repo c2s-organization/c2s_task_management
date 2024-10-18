@@ -5,3 +5,4 @@
   - task_notify
   - auth_notify
   - scrape_notify
+  - scrape_task
